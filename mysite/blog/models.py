@@ -56,3 +56,15 @@ class Comment(models.Model):
 
     def __str__(self):
         return 'Comment by {} on {}'.format(self.name, self.post)
+
+
+class Province(models.Model):
+    name=models.CharField(max_length=100)
+    city=models.ForeignKey('City',on_delete=models.SET_NULL,null=True,db_constraint=False,related_name='city')
+
+
+class City(models.Model):
+    name=models.CharField(max_length=100)
+
+
+

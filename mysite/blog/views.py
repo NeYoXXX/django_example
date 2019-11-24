@@ -9,6 +9,8 @@ from django.db.models import Count
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from .forms import EmailPostForm, CommentForm, SearchForm
 
+from rest_framework import mixins, generics
+
 
 ''' 
 # CBV基于类的视图
@@ -105,5 +107,7 @@ def post_search(request):
                                             rank=SearchRank(search_vector, search_query)
                                             ).filter(rank__gte=0.3).order_by('-rank')
     return render(request, 'blog/post/search.html', {'query': query, "form": form, 'results': results})
+
+
 
 

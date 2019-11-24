@@ -1,8 +1,14 @@
 from django.urls import path
 from . import views
 from .feeds import LastestPostFeed
+from rest_framework import routers
+from .base_views import ProvinceView
+
 
 app_name = 'blog'
+router = routers.SimpleRouter()
+router.register(r'province', ProvinceView)
+
 urlpatterns = [
     # post views
     path('', views.post_list, name='post_list'), # 基于函数
@@ -13,3 +19,5 @@ urlpatterns = [
     path('feed/', LastestPostFeed(), name='post_feed'),
     path('search/', views.post_search, name='post_search'),
 ]
+
+urlpatterns += router.urls
