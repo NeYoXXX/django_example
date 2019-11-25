@@ -15,6 +15,16 @@ class PublishedManager(models.Manager):
         return super(PublishedManager, self).get_queryset().filter(status='published')
 
 
+class Place(models.Model):
+    name = models.CharField(max_length=50)
+    address = models.CharField(max_length=80)
+
+class Restaurant(Place):
+    serves_hot_dogs = models.BooleanField(default=False)
+    serves_pizza = models.BooleanField(default=False)
+
+
+
 class Post(models.Model):
     STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'))
     title = models.CharField(max_length=250)
@@ -33,6 +43,7 @@ class Post(models.Model):
 
     class Meta:
         ordering = ('-publish',)
+        db_table = 'Post'
 
 
     def __str__(self):
@@ -53,6 +64,7 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ("created",)
+        db_table = 'Comment'
 
     def __str__(self):
         return 'Comment by {} on {}'.format(self.name, self.post)

@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Comment
+
+from blog.Ser import PlaceSer, RestaurantSer
+from .models import Post, Comment, Place, Restaurant
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.core.mail import send_mail
@@ -8,6 +10,8 @@ from django.db.models import Count
 
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from .forms import EmailPostForm, CommentForm, SearchForm
+
+from rest_framework import mixins, viewsets, status
 
 
 ''' 
@@ -106,4 +110,16 @@ def post_search(request):
                                             ).filter(rank__gte=0.3).order_by('-rank')
     return render(request, 'blog/post/search.html', {'query': query, "form": form, 'results': results})
 
+
+
+class Placeview(mixins.CreateModelMixin,
+                 mixins.UpdateModelMixin,
+                 mixins.ListModelMixin,
+                 mixins.RetrieveModelMixin,
+                 viewsets.GenericViewSet):
+
+    authentication_classes = []
+    permission_classes = []
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantSer
 
