@@ -3,12 +3,16 @@ from rest_framework import routers
 
 from . import views
 from .feeds import LastestPostFeed
+from rest_framework import routers
+from .base_views import ProvinceView
 
-router = routers.SimpleRouter()
-router.register(r'palce', views.Placeview, basename='palce')
+
 
 
 app_name = 'blog'
+router = routers.SimpleRouter()
+router.register(r'province', ProvinceView)
+
 urlpatterns = [
     # post views
     path('', views.post_list, name='post_list'), # 基于函数
@@ -18,6 +22,6 @@ urlpatterns = [
     path('tag/<slug:tag_slug>/', views.post_list, name='post_list_by_tag'),
     path('feed/', LastestPostFeed(), name='post_feed'),
     path('search/', views.post_search, name='post_search'),
-
-    path(r'api/', include(router.urls)),
 ]
+
+urlpatterns += router.urls
